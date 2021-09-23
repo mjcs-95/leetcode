@@ -1,40 +1,43 @@
 #include <vector>
+#include <algorithm>
+
 using namespace std;
 
 class Solution
 {
 public:
-    double findMedianSortedArrays1(vector<int> &nums1, vector<int> &nums2)
+    //v2  binary search based solution
+    double findMedianSortedArrays(vector<int> &nums1, vector<int> &nums2)
     {
-        int totalsize = nums1.size() + nums2.size();
-        int oddSize = totalsize % 2;
-        size_t it1 = 0;
-        size_t it2 = 0;
-        int val1 = 0, val2 = 0;
-
-        for (size_t counter = 0; counter <= totalsize / 2; counter++)
-        {
-            if(!oddSize)
+        if(nums2.size() < nums1.size()) 
+            nums1.swap(nums2);
+        size_t half = (nums1.size() + nums2.size() + 1)/2; // +1 deals with a odd number of elements        
+        size_t pivotL = 0; 
+        size_t pivotR = nums1.size();
+        while(pivotL <= pivotR){
+            size_t it1 = (pivotL + pivotR) / 2;
+            size_t it2 = half - it1;
+            int leftElementNums1 = (it1 > 0) ? nums1[it1 - 1] : INT_MIN;
+            int rightElementNums1 = (it1 < nums1.size()) ? nums1[it1] : INT_MAX;
+            int leftElementNums2 = (it2 > 0) ? nums2[it2 - 1] : INT_MIN;
+            int rightElementNums2 = (it2 < nums2.size()) ? nums2[it2] : INT_MAX;
+            if (leftElementNums1 <= rightElementNums2 && leftElementNums2 <= rightElementNums1) 
             {
-                val2 = val1;
-            }
-            if (it1 < nums1.size() && it2 < nums2.size())
-            {
-                if(nums1[it1] > nums2[it2]){
-                    val1 = nums2[it2];
-                    it2++;
-                }else{
-                    val1 = nums1[it1];
-                    it1++;
+                if ((nums1.size() + nums2.size()) % 2 == 0)
+                {
+                    return (max(leftElementNums1, leftElementNums2) + min(rightElementNums1, rightElementNums2)) / 2.0;
                 }
-            }else if(it1 < nums1.size()){
-                val1 = nums1[it1];
-                it1++;
-            }else{
-                val1 = nums2[it2];
-                it2++;
+                return max(leftElementNums1, leftElementNums2);
+            }
+            else if (leftElementNums1 > rightElementNums2)
+            {
+                pivotR = it1 - 1;
+            }
+            else
+            {
+                pivotL = it1 + 1;        
             }
         }
-        return (oddSize) ? val1 : ((val1 + val2) / 2.0);
+        return 0;
     }
 };
