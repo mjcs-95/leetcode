@@ -41,12 +41,21 @@ public:
         return 0;
     }
 
-    //Naive implementation of power algorithm
+    //improved solution of mypow
     double myPow(double x, int n) {
-        if(n == 0 || x == 1.0) return 1.0;        
-        double sol = 1;
-        for(auto i=0; i < abs(n); ++i)           
-            sol = sol * x;        
+        if(n == 0 || x == 1.0) return 1.0;  
+        long target = abs(n);
+        if(x == -1.0) return (n%2) ? -1.0 : 1.0;
+        double sol = 1.0;
+        for(long power=0; power < target; ){
+            if( (power*2) < target && sol != 1.0){
+                sol = sol*sol;
+                power = power*2;
+            }else{
+                power++;
+                sol = sol * x;        
+            }
+        }           
         return (n > 0.0) ? sol : 1.0/sol;
     }
 };
