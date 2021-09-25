@@ -40,4 +40,13 @@ public:
         }
         return 0;
     }
+
+    //Naive implementation of power algorithm
+    double myPow(double x, int n) {
+        if(n == 0 || x == 1.0) return 1.0;        
+        double sol = 1;
+        for(auto i=0; i < abs(n); ++i)           
+            sol = sol * x;        
+        return (n > 0.0) ? sol : 1.0/sol;
+    }
 };
