@@ -98,4 +98,17 @@ public:
                 return true;
         return false;
     }
+
+    int reverse(int x) {
+        int negative = x < 0;
+        x = abs(x);
+        int sol = 0;
+        for(int i = 0 ; 0 < x; ++i){
+            if(sol > INT_MAX/10)
+                return 0;
+            sol = sol*10 + x % 10;
+            x = x / 10;
+        }
+        return (negative)? -sol : sol;
+    }
 };
