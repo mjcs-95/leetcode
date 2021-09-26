@@ -92,15 +92,10 @@ public:
 
     bool containsDuplicate(vector<int> &nums)
     {
-        set<int> myset;
-        for (size_t i = 0; i < nums.size(); i++)
-        {
-            if(myset.find(nums[i]) != myset.end()){
+        sort(nums.begin(), nums.end());
+        for (size_t i = 0; i < nums.size() - 1;)
+            if (nums[i] == nums[++i])
                 return true;
-            }else{
-                myset.insert(nums[i]);
-            }
-        }
-        return false:
+        return false;
     }
 };
