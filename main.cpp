@@ -1,6 +1,9 @@
-#include <vector>
 #include <algorithm>
+#include <map>
 #include <set>
+#include <string>
+#include <unordered_map>
+#include <vector>
 
 using namespace std;
 
@@ -99,16 +102,44 @@ public:
         return false;
     }
 
-    int reverse(int x) {
+    int reverse(int x)
+    {
         int negative = x < 0;
         x = abs(x);
         int sol = 0;
-        for(int i = 0 ; 0 < x; ++i){
-            if(sol > INT_MAX/10)
+        for (int i = 0; 0 < x; ++i)
+        {
+            if (sol > INT_MAX / 10)
                 return 0;
-            sol = sol*10 + x % 10;
+            sol = sol * 10 + x % 10;
             x = x / 10;
         }
-        return (negative)? -sol : sol;
+        return (negative) ? -sol : sol;
+    }
+
+    int romanToInt(string s)
+    {
+        unordered_map<char, int> hash{
+            {'I', 1},
+            {'V', 5},
+            {'X', 10},
+            {'L', 50},
+            {'C', 100},
+            {'D', 500},
+            {'M', 1000}};
+        int sol = 0;
+        for (size_t i = 0; i < s.length(); ++i)
+        {
+            if (hash[s[i]] < hash[s[i + 1]])
+            {
+                sol += hash[s[i + 1]] - hash[s[i]];
+                ++i;
+            }
+            else
+            {
+                sol += hash[s[i]];
+            }
+        }
+        return sol;
     }
 };
