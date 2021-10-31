@@ -132,8 +132,7 @@ public:
         {
             if (hash[s[i]] < hash[s[i + 1]])
             {
-                sol += hash[s[i + 1]] - hash[s[i]];
-                ++i;
+                sol += hash[s[i + 1]] - hash[s[i++]];
             }
             else
             {
