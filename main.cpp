@@ -1,7 +1,12 @@
-#include <vector>
 #include <algorithm>
 #include <stack>
 #include <queue>
+#include <map>
+#include <set>
+#include <string>
+#include <unordered_map>
+#include <vector>
+
 using namespace std;
 
 class Solution
@@ -78,3 +83,99 @@ public:
 
 
 
+    //improved solution of mypow
+    double myPow(double x, int n)
+    {
+        if (n == 0 || x == 1.0)
+            return 1.0;
+        if (x == -1.0)
+            return (n % 2 == 0) ? 1.0 : -1.0;
+        long target = n;
+        if (target < 0)
+            target = -target;
+        double sol = 1.0;
+        while (target > 0)
+        {
+            if (target % 2 == 0)
+            {
+                x = x * x;
+                target = target / 2;
+            }
+            else
+            {
+                --target;
+                sol = sol * x;
+            }
+        }
+        return (n > 0.0) ? sol : 1.0 / sol;
+    }
+
+    void rotate(vector<vector<int>> &matrix)
+    {
+        auto N = matrix[0].size();
+        for (auto depth = 0; depth < N / 2; ++depth)
+        {
+            for (auto rowPosition = depth; rowPosition < N - depth - 1; ++rowPosition)
+            {
+                //backup of first deleted position
+                int temp = matrix[depth][rowPosition];
+                //We rotate 4 pixels in each loop
+                long coord1 = N - 1 - rowPosition;
+                long coord2 = N - 1 - depth;
+                matrix[depth][rowPosition] = matrix[coord1][depth];
+                matrix[coord1][depth] = matrix[coord2][coord1];
+                matrix[coord2][coord1] = matrix[rowPosition][coord2];
+                matrix[rowPosition][coord2] = temp;
+            }
+        }
+    }
+
+    bool containsDuplicate(vector<int> &nums)
+    {
+        sort(nums.begin(), nums.end());
+        for (size_t i = 0; i < nums.size() - 1;)
+            if (nums[i] == nums[++i])
+                return true;
+        return false;
+    }
+
+    int reverse(int x)
+    {
+        int negative = x < 0;
+        x = abs(x);
+        int sol = 0;
+        for (int i = 0; 0 < x; ++i)
+        {
+            if (sol > INT_MAX / 10)
+                return 0;
+            sol = sol * 10 + x % 10;
+            x = x / 10;
+        }
+        return (negative) ? -sol : sol;
+    }
+
+    int romanToInt(string s)
+    {
+        unordered_map<char, int> hash{
+            {'I', 1},
+            {'V', 5},
+            {'X', 10},
+            {'L', 50},
+            {'C', 100},
+            {'D', 500},
+            {'M', 1000}};
+        int sol = 0;
+        for (size_t i = 0; i < s.length(); ++i)
+        {
+            if (hash[s[i]] < hash[s[i + 1]])
+            {
+                sol += hash[s[i + 1]] - hash[s[i++]];
+            }
+            else
+            {
+                sol += hash[s[i]];
+            }
+        }
+        return sol;
+    }
+};
